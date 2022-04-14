@@ -1,10 +1,10 @@
 from yahoofinancials import YahooFinancials
-from utils import calculateEndDate
+from utils import getEndDate
 import pandas as pd
 
 YF_BTC_START = '2014-09-15'
 
-def getTickerData (ticker, startDate = YF_BTC_START, endDate = calculateEndDate(), timeInterval='weekly'):
+def pullTickerData (ticker, startDate = YF_BTC_START, endDate = getEndDate(), timeInterval='weekly'):
     yahoo_financials = YahooFinancials(ticker)
     data = yahoo_financials.get_historical_price_data(start_date=startDate,
                                                       end_date=endDate,
@@ -14,7 +14,7 @@ def getTickerData (ticker, startDate = YF_BTC_START, endDate = calculateEndDate(
     return df
 
 
-def getCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = calculateEndDate(), timeInterval='weekly'):
+def pullCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = getEndDate(), timeInterval='weekly'):
     yahoo_financials = YahooFinancials(symbol)
     data=yahoo_financials.get_historical_price_data (
             start_date = startDate,
@@ -26,4 +26,4 @@ def getCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = calcula
     return btc_df
 
 # test
-print (getCryptoData ())
+#print (getCryptoData ())

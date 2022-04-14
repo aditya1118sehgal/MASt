@@ -28,13 +28,6 @@ def plotChart (crypto_data):
             ),
             go.Scatter(
                 x = crypto_data.index,
-                y = crypto_data.close.rolling(window=21).mean(),
-                mode = 'lines',
-                name = '21SMA',
-                line = {'color': 'orange', 'width': 4}
-            ),
-            go.Scatter(
-                x = crypto_data.index,
                 y = crypto_data.close.rolling(window=50).mean(),
                 mode = 'lines',
                 name = '50SMA',
