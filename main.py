@@ -1,17 +1,20 @@
-'''
+import pandas as pd
 from yFin import *
 from constants import tickers, paths
 from visualize import plotChart
 from utils import writeDfToCsv, readDfFromCsv, formatDate
 
-timeInterval = 'weekly'
-symbol = 'BTC-USD'
-#c = pullCryptoData (symbol = symbol, timeInterval = timeInterval)
-#print (c)
-filePath = '{}{}{}{}/'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], timeInterval)
-filename = '{}-{}'.format(symbol, formatDate())
-#writeDfToCsv (df = c, path = filePath,filename = filename)
-r = readDfFromCsv (filePath + filename)
-print (r)
-plotChart (r)
-'''
+def buildCompleteDatasetBtc ():
+    timeInterval = 'monthly'
+    symbol = 'BTC-USD'
+    filePath = '{}{}{}{}/'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], timeInterval)
+    filename = '{}-{}'.format(symbol, formatDate())
+    r = readDfFromCsv (filePath + filename).drop (['adjclose'], axis = 1)
+    h = readDfFromCsv ('data/historical-monthly').drop (['adjclose'], axis = 1)
+    #h = h.iloc[::-1]
+    df = pd.concat ([h, r])
+    print (df)
+    writeDfToCsv (df, path = 'data/', filename = 'complete')
+    #plotChart (readDfFromCsv ('data/complete'))
+
+buildCompleteDatasetBtc ()
