@@ -14,7 +14,7 @@ def pullTickerData (ticker, startDate = YF_BTC_START, endDate = getEndDate(), ti
     return df
 
 
-def pullCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = getEndDate(), timeInterval='weekly'):
+def pullCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = getEndDate(), timeInterval='monthly'):
     yahoo_financials = YahooFinancials(symbol)
     data=yahoo_financials.get_historical_price_data (
             start_date = startDate,
@@ -23,6 +23,7 @@ def pullCryptoData (symbol='BTC-USD', startDate = YF_BTC_START, endDate = getEnd
         )
     btc_df = pd.DataFrame(data[symbol]['prices'])
     btc_df = btc_df.drop('date', axis=1).set_index('formatted_date')
+    btc_df = btc_df.drop (['adjclose'], axis = 1)
     return btc_df
 
 # test

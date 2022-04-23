@@ -27,12 +27,12 @@ CSV_EXT = '.csv'
 def readDfFromCsv (filename):
     if filename is not None:
         completeFilename = filename + CSV_EXT
-        return pd.read_csv (filepath_or_buffer = completeFilename)
+        return pd.read_csv (filepath_or_buffer = completeFilename, index_col = False)
 
 def writeDfToCsv (df, path, filename='file.csv'):
     Path(path).mkdir(parents=True, exist_ok=True)
     completeFilename = path + filename + CSV_EXT
-    df.to_csv(path_or_buf = completeFilename, index=True)
+    df.to_csv(path_or_buf = completeFilename)
 
 def writeJSON (j, filename = 'file.json' ):
     with open(filename, 'w') as outfile:

@@ -14,13 +14,6 @@ def plotChart (crypto_data):
             ),
             go.Scatter(
                 x = crypto_data.index,
-                y = crypto_data.close.rolling(window=8).mean(),
-                mode = 'lines',
-                name = '8SMA',
-                line = {'color': 'purple', 'width': 4}
-            ),
-            go.Scatter(
-                x = crypto_data.index,
                 y = crypto_data.close.rolling(window=20).mean(),
                 mode = 'lines',
                 name = '20SMA',
@@ -28,20 +21,37 @@ def plotChart (crypto_data):
             ),
             go.Scatter(
                 x = crypto_data.index,
-                y = crypto_data.close.rolling(window=50).mean(),
+                y = 10000 * (crypto_data.close.rolling(window=1).mean() - crypto_data.close.rolling(window=20).mean())/crypto_data.close.rolling(window=20).mean(),
                 mode = 'lines',
-                name = '50SMA',
-                line = {'color': 'blue', 'width': 4}
-            ),
-            go.Scatter(
-                x = crypto_data.index,
-                y = crypto_data.close.rolling(window=200).mean(),
-                mode = 'lines',
-                name = '200SMA',
-                line = {'color': 'purple'}
+                name = '20SMAext',
+                line = {'color': 'green', 'width': 4}
             )
         ]
     )
+    '''
+    ,
+    go.Scatter(
+        x = crypto_data.index,
+        y = crypto_data.close.rolling(window=8).mean(),
+        mode = 'lines',
+        name = '8SMA',
+        line = {'color': 'purple', 'width': 4}
+    ),
+    go.Scatter(
+        x = crypto_data.index,
+        y = crypto_data.close.rolling(window=50).mean(),
+        mode = 'lines',
+        name = '50SMA',
+        line = {'color': 'blue', 'width': 4}
+    ),
+    go.Scatter(
+        x = crypto_data.index,
+        y = crypto_data.close.rolling(window=200).mean(),
+        mode = 'lines',
+        name = '200SMA',
+        line = {'color': 'purple'}
+    )
+    '''
 
     fig.update_layout(
         title = f'The Candlestick graph',
