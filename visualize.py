@@ -49,7 +49,7 @@ def plotChartSubplots (data):
             line = {'color': 'blue', 'width': 4}
         )
     )
-    fig.add_trace (go.Bar(x=data['formatted_date'], y=data['sma20ext'], marker_color = 'rgba(167, 240, 242, .25)', name = 'sma20ext'),secondary_y=True)
+    fig.add_trace (go.Bar(x=data['formatted_date'], y=data['sma20ext'], marker_color = 'rgba(167, 240, 242, .05)', name = 'sma20ext'),secondary_y=True)
     fig.layout.yaxis2.showgrid=False
     fig.update_layout(
         title = f'The Candlestick graph',
@@ -62,14 +62,27 @@ def plotChartSubplots (data):
 
     #
     dist=5
-    data['occurences'] = np.where(data.low < data.sma20, data.low - dist, data.high + dist)
-    data['arrows'] = np.where(data['low'] < data['sma20'], 'triangle-up', 'triangle-down')
-    data['color'] = np.where(data['low'] < data['sma20'], 'green', 'rgba(167, 240, 242, 0)')
+    buySignal = np.logical_and(data.low < data.sma20, data.sma4 > data.sma8)
+    buySignal = np.logical_or (buySignal, data.low < data.sma50)
+    sellSignal = data.sma20ext > 2
+    data['buys'] = np.where(buySignal, data.low - dist, data.high + dist)
+    data['buyArrows'] = np.where(buySignal, 'triangle-up', 'triangle-down')
+    data['buyColor'] = np.where(buySignal, 'green', 'rgba(167, 240, 242, 0)')
+    data['sells'] = np.where (sellSignal, data.high + dist, data.low - dist)
+    data['sellArrows'] = np.where(sellSignal, 'triangle-down', 'triangle-down')
+    data['sellColor'] = np.where(sellSignal, 'red', 'rgba(167, 240, 242, 0)')
     fig.add_trace (go.Scatter(x=data['formatted_date'],
-                   y=data['occurences'],
+                   y=data['buys'],
                    mode='markers',
                    name ='markers',
-                   marker=go.Marker(size=20,symbol=data["arrows"],color=data['color']))
+                   marker=go.Marker(size=20,symbol=data['buyArrows'],color=data['buyColor']))
+                   )
+
+    fig.add_trace (go.Scatter(x=data['formatted_date'],
+                   y=data['sells'],
+                   mode='markers',
+                   name ='markers',
+                   marker=go.Marker(size=20,symbol=data['sellArrows'],color=data['sellColor']))
                    )
     #
 
