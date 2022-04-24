@@ -25,16 +25,24 @@ def buildCompleteDatasetBtc (filename = '{}-{}'.format('BTC-USD', formatDate()))
     else:
         df = readDfFromCsv (filePath + filename)
         print (df)
+    df = addSMA (df, 4)
+    df = addSMA (df, 8)
+    df = addSMA (df, 20)
+    df = addSMA (df, 50)
+    df = addExtensionSMA (df, 20)
     return df
 
 ### append moving average to df
 def addSMA (df, sma):
     closeDf = df['close'].to_frame()
-    df ['sma20'] = closeDf['close'].rolling (sma).mean ()
+    name = 'sma' + str (sma)
+    df [name] = closeDf['close'].rolling (sma).mean ()
     return df
 
 def addExtensionSMA (df, sma):
     closeDf = df ['close'].to_frame()
-    sma20 = df ['sma20'].to_frame ()
-    df ['sma20ext'] =  (sma20['sma20']) - closeDf['close']
+    smaname = 'sma' + str (sma)
+    sma20 = df [smaname].to_frame ()
+    name = smaname + 'ext'
+    df [name] =  (closeDf['close'] - sma20[smaname])/sma20[smaname]
     return df
