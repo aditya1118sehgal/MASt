@@ -5,9 +5,10 @@ from visualize import plotChart
 from utils import writeDfToCsv, readDfFromCsv, formatDate
 from pathlib import Path
 
-def buildCompleteDatasetBtc (filename = '{}-{}'.format('BTC-USD', formatDate())):
+SYMBOL = 'BTC-USD'
+def buildCompleteDatasetBtc (filename = '{}-{}'.format(SYMBOL, formatDate())):
     timeInterval = 'monthly'
-    filePath = '{}{}{}{}/'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], timeInterval)
+    filePath = '{}{}{}{}/{}'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], SYMBOL, timeInterval)
     df = None
     print (filePath + filename+'.csv')
     if not Path(filePath + filename+'.csv').is_file():
@@ -16,20 +17,16 @@ def buildCompleteDatasetBtc (filename = '{}-{}'.format('BTC-USD', formatDate()))
         writeDfToCsv (r , filePath, filename)
         r = readDfFromCsv (filePath + filename)
         h = readDfFromCsv ('data/historical-monthly').drop (['adjclose'], axis = 1)
-        print (h)
-        print (r)
         df = pd.concat ([h, r])
+        df = addSMA (df, 4)
+        df = addSMA (df, 8)
         df = addSMA (df, 20)
+        df = addSMA (df, 50)
         df = addExtensionSMA (df, 20)
         writeDfToCsv (df, filePath, filename)
     else:
+        print ('read file')
         df = readDfFromCsv (filePath + filename)
-        print (df)
-    df = addSMA (df, 4)
-    df = addSMA (df, 8)
-    df = addSMA (df, 20)
-    df = addSMA (df, 50)
-    df = addExtensionSMA (df, 20)
     return df
 
 ### append moving average to df
