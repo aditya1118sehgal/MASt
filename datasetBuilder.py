@@ -8,7 +8,7 @@ from pathlib import Path
 SYMBOL = 'BTC-USD'
 def buildCompleteDatasetBtc (filename = '{}-{}'.format(SYMBOL, formatDate())):
     timeInterval = 'monthly'
-    filePath = '{}{}{}{}/{}'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], SYMBOL, timeInterval)
+    filePath = '{}{}{}{}/{}/'.format (paths['basePath'], paths['csvPath'], paths['cryptoPath'], SYMBOL, timeInterval)
     df = None
     print (filePath + filename+'.csv')
     if not Path(filePath + filename+'.csv').is_file():
@@ -16,7 +16,7 @@ def buildCompleteDatasetBtc (filename = '{}-{}'.format(SYMBOL, formatDate())):
         r = pullCryptoData ()
         writeDfToCsv (r , filePath, filename)
         r = readDfFromCsv (filePath + filename)
-        h = readDfFromCsv ('data/historical-monthly').drop (['adjclose'], axis = 1)
+        h = readDfFromCsv ('data/historical-monthly')
         df = pd.concat ([h, r])
         df = addSMA (df, 4)
         df = addSMA (df, 8)
@@ -37,9 +37,9 @@ def addSMA (df, sma):
     return df
 
 def addExtensionSMA (df, sma):
-    closeDf = df ['close'].to_frame()
+    closeDf = df ['high'].to_frame()
     smaname = 'sma' + str (sma)
     sma20 = df [smaname].to_frame ()
     name = smaname + 'ext'
-    df [name] =  (closeDf['close'] - sma20[smaname])/sma20[smaname]
+    df [name] =  (closeDf['high'] - sma20[smaname])/sma20[smaname]
     return df

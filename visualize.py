@@ -64,7 +64,7 @@ def plotChartSubplots (data):
     dist=5
     buySignal = np.logical_and(data.low < data.sma20, data.sma4 > data.sma8)
     buySignal = np.logical_or (buySignal, data.low < data.sma50)
-    sellSignal = data.sma20ext > 2
+    sellSignal = data.sma20ext > 2.5
     data['buys'] = np.where(buySignal, data.low - dist, data.high + dist)
     data['buyArrows'] = np.where(buySignal, 'triangle-up', 'triangle-down')
     data['buyColor'] = np.where(buySignal, 'green', 'rgba(167, 240, 242, 0)')
