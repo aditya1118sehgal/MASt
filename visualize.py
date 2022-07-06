@@ -16,40 +16,40 @@ def plotChartSubplots (data):
     fig.add_trace (
         go.Scatter (
             x = data['formatted_date'],
-            y = data['sma4'],
-            mode = 'lines',
-            name = '4SMA',
-            line = {'color': 'pink', 'width': 4}
-        )
-    )
-    fig.add_trace (
-        go.Scatter (
-            x = data['formatted_date'],
-            y = data['sma8'],
-            mode = 'lines',
-            name = '8SMA',
-            line = {'color': 'purple', 'width': 4}
-        )
-    )
-    fig.add_trace (
-        go.Scatter (
-            x = data['formatted_date'],
             y = data['sma20'],
             mode = 'lines',
-            name = '20SMA',
+            name = 'SMA_20',
             line = {'color': 'yellow', 'width': 4}
         )
     )
     fig.add_trace (
         go.Scatter (
             x = data['formatted_date'],
-            y = data['sma50'],
+            y = data['ema21'],
             mode = 'lines',
-            name = '50SMA',
+            name = 'EMA_21',
+            line = {'color': 'orange', 'width': 4}
+        )
+    )
+    fig.add_trace (
+        go.Scatter (
+            x = data['formatted_date'],
+            y = data['sma36'],
+            mode = 'lines',
+            name = 'SMA_36',
             line = {'color': 'blue', 'width': 4}
         )
     )
-    fig.add_trace (go.Bar(x=data['formatted_date'], y=data['sma20ext'], marker_color = 'rgba(167, 240, 242, .05)', name = 'sma20ext'),secondary_y=True)
+    fig.add_trace (
+        go.Scatter (
+            x = data['formatted_date'],
+            y = data['sma60'],
+            mode = 'lines',
+            name = 'SMA_60',
+            line = {'color': 'green', 'width': 4}
+        )
+    )
+    #fig.add_trace (go.Bar(x=data['formatted_date'], y=data['sma20ext'], marker_color = 'rgba(167, 240, 242, .05)', name = 'sma20ext'),secondary_y=True)
     fig.layout.yaxis2.showgrid=False
     fig.update_layout(
         title = f'The Candlestick graph',
@@ -61,6 +61,7 @@ def plotChartSubplots (data):
     #fig.update_yaxes(tickprefix='$')
 
     #
+    '''
     dist=5
     buySignal = np.logical_and(data.low < data.sma20, data.sma4 > data.sma8)
     buySignal = np.logical_or (buySignal, data.low < data.sma50)
@@ -85,7 +86,7 @@ def plotChartSubplots (data):
                    marker=go.Marker(size=20,symbol=data['sellArrows'],color=data['sellColor']))
                    )
     #
-
+    '''
     fig.show()
 
 

@@ -18,11 +18,13 @@ def buildCompleteDatasetBtc (filename = '{}-{}'.format(SYMBOL, formatDate())):
         r = readDfFromCsv (filePath + filename)
         h = readDfFromCsv ('data/historical-monthly')
         df = pd.concat ([h, r])
-        df = addSMA (df, 4)
-        df = addSMA (df, 8)
+        #df = addSMA (df, 4)
+        #df = addSMA (df, 8)
         df = addSMA (df, 20)
-        df = addSMA (df, 50)
-        df = addExtensionSMA (df, 20)
+        df = addEMA (df, 21)
+        df = addSMA (df, 36)
+        df = addSMA (df, 60)
+        #df = addExtensionSMA (df, 20)
         writeDfToCsv (df, filePath, filename)
     else:
         print ('read file')
@@ -34,6 +36,12 @@ def addSMA (df, sma):
     closeDf = df['close'].to_frame()
     name = 'sma' + str (sma)
     df [name] = closeDf['close'].rolling (sma).mean ()
+    return df
+
+def addEMA (df, ema):
+    closeDf = df['close'].to_frame()
+    name = 'ema' + str (ema)
+    df[name] = closeDf['close'].ewm(span = ema, adjust = False).mean()
     return df
 
 def addExtensionSMA (df, sma):
