@@ -25,6 +25,20 @@ def buildCompleteDatasetBtc (filename = '{}-{}'.format(SYMBOL, formatDate())):
         df = addSMA (df, 36)
         df = addSMA (df, 60)
         #df = addExtensionSMA (df, 20)
+        sma20 = df ['sma20']
+        ema21 = df ['ema21']
+        deltaSma20 = df ['sma20'].diff()
+        deltaEma21 = df ['ema21'].diff ()
+        deltaSma36 = df ['sma36'].diff ()
+        deltaSma60 = df ['sma60'].diff ()
+        df ['deltaSma20'] = deltaSma20
+        df ['deltaEma21'] = deltaEma21
+        df ['deltaSma36'] = deltaSma36
+        df ['deltaSma60'] = deltaSma60
+        df ['slopeSma20'] = df ['deltaSma20']/df['sma20']
+        df ['slopeEma21'] = df ['deltaEma21']/df ['ema21']
+        df ['slopeSma36'] = df ['deltaSma36']/df ['sma36']
+        df ['slopeSma60'] = df ['deltaSma60']/df ['sma60']
         writeDfToCsv (df, filePath, filename)
     else:
         print ('read file')
