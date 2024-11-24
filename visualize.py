@@ -2,12 +2,24 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 import plotly.express as px
+import matplotlib.pyplot as plt
+
+def plotGuppy (df):
+    lines = ["adjclose"] + ['EMA_{}'.format (f) for f in list(range(3, 25, 2))]
+    lines = lines + ['EMA_{}'.format (f) for f in list(range(25, 73, 3))]
+    print (lines)
+    cmap = {'aqua':'aqua', 'red':'red', 'lime':'lime', 'gray':'gray', 'blue':'blue'}
+    colors = ["black", df["colFinal"].values.tolist (),df ["colFinal2"].values.tolist ()]
+    print (colors)
+    emaColors = df["colFinal"].values.tolist ()
+
+    df.plot (x = "date", y = lines, c = 'colFinal')
+    plt.show()
+    return
 
 def plotDf (df):
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df ['formatted_date'], y = df['close'], mode='lines', name='lines'))
-    fig.add_trace(go.Scatter(x=df ['formatted_date'], y = df['slopeEma21'], mode='lines', name='lines'))
-    fig.add_trace(go.Scatter(x=df ['formatted_date'], y = df['slopeSma20'], mode='lines', name='lines'))
+    fig.add_trace(go.Scatter(x=df.index, y = df['close'], mode='lines', name='lines'))
     #fig = px.line(df)
     #fig = px.line(df)
     fig.show()
